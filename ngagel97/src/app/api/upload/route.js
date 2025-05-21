@@ -1,5 +1,13 @@
+// app/api/upload/route.js
 import { NextResponse } from "next/server";
-import { put, del } from "@vercel/blob";
+import {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} from "@aws-sdk/client-s3";
+import { v4 as uuidv4 } from "uuid";
+
+const s3 = new S3Client({ region: process.env.AWS_REGION });
 
 export async function POST(req) {
   try {
@@ -10,9 +18,30 @@ export async function POST(req) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    const blob = await put(file.name, file, { access: "public" });
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const key = `${uuidv4()}-${file.name}`;
 
-    return NextResponse.json(blob);
+    const uploadParams = {
+      Bucket: process.env.AWS_S3_BUCKET,
+      Key: key,
+      Body: buffer,
+      ContentType: file.type,
+      ACL: "public-read", // kalau mau bisa diakses langsung dari URL
+    };
+
+    await s3.send(new PutObjectCommand(uploadParams));
+
+    const url = `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
+
+    return NextResponse.json({
+      url,
+      pathname: `/${key}`,
+      key,
+      uploadedAt: new Date().toISOString(),
+      size: buffer.length,
+      contentType: file.type,
+    });
   } catch (error) {
     return NextResponse.json(
       { error: "File upload failed", details: error.message },
@@ -23,17 +52,23 @@ export async function POST(req) {
 
 export async function DELETE(req) {
   const { searchParams } = new URL(req.url);
-  const filePath = searchParams.get("filepath");
-  let message = "No file path provided";
+  const key = searchParams.get("key");
+
+  if (!key) {
+    return NextResponse.json({ error: "No key provided" }, { status: 400 });
+  }
+
   try {
-    if (filePath) {
-      await del(filePath); // Hapus file
-      message = "File deleted successfully";
-    }
+    const deleteParams = {
+      Bucket: process.env.AWS_S3_BUCKET,
+      Key: key,
+    };
+
+    await s3.send(new DeleteObjectCommand(deleteParams));
 
     return NextResponse.json({
       success: true,
-      message: message,
+      message: "File deleted successfully",
     });
   } catch (error) {
     return NextResponse.json(
