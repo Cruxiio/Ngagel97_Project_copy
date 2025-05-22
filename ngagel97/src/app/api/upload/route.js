@@ -1,4 +1,3 @@
-// app/api/upload/route.js
 import { NextResponse } from "next/server";
 import {
   S3Client,
@@ -18,8 +17,14 @@ export async function POST(req) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    // Stream-based buffer creation
+    const stream = file.stream();
+    const chunks = [];
+    for await (const chunk of stream) {
+      chunks.push(chunk);
+    }
+    const buffer = Buffer.concat(chunks);
+
     const key = `${uuidv4()}-${file.name}`;
 
     const uploadParams = {
@@ -27,7 +32,7 @@ export async function POST(req) {
       Key: key,
       Body: buffer,
       ContentType: file.type,
-      ACL: "public-read", // kalau mau bisa diakses langsung dari URL
+      ACL: "public-read",
     };
 
     await s3.send(new PutObjectCommand(uploadParams));
@@ -45,34 +50,6 @@ export async function POST(req) {
   } catch (error) {
     return NextResponse.json(
       { error: "File upload failed", details: error.message },
-      { status: 500 }
-    );
-  }
-}
-
-export async function DELETE(req) {
-  const { searchParams } = new URL(req.url);
-  const key = searchParams.get("key");
-
-  if (!key) {
-    return NextResponse.json({ error: "No key provided" }, { status: 400 });
-  }
-
-  try {
-    const deleteParams = {
-      Bucket: process.env.AWS_S3_BUCKET,
-      Key: key,
-    };
-
-    await s3.send(new DeleteObjectCommand(deleteParams));
-
-    return NextResponse.json({
-      success: true,
-      message: "File deleted successfully",
-    });
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to delete file", details: error.message },
       { status: 500 }
     );
   }
