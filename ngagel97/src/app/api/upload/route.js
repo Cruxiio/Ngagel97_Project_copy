@@ -32,7 +32,7 @@ export async function POST(req) {
       Key: key,
       Body: buffer,
       ContentType: file.type,
-      ACL: "public-read", // Buat URL langsung bisa diakses
+      ACL: "public-read",
     };
 
     await s3.send(new PutObjectCommand(uploadParams));
@@ -40,7 +40,7 @@ export async function POST(req) {
     const url = `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
 
     return NextResponse.json({
-      url, // Mirip dengan respon Vercel Blob
+      url,
       pathname: `/${key}`,
       key,
       uploadedAt: new Date().toISOString(),
@@ -48,6 +48,8 @@ export async function POST(req) {
       contentType: file.type,
     });
   } catch (error) {
+    console.error("Upload error:", error);
+    console.log("Upload error:", error);
     return NextResponse.json(
       { error: "File upload failed", details: error.message },
       { status: 500 }
@@ -76,6 +78,8 @@ export async function DELETE(req) {
       message: "File deleted successfully",
     });
   } catch (error) {
+    console.error("Upload error:", error);
+    console.log("Upload error:", error);
     return NextResponse.json(
       { error: "Failed to delete file", details: error.message },
       { status: 500 }
