@@ -31,7 +31,7 @@ export async function middleware(request) {
   if (token) {
     try {
       const { payload } = await jwtVerify(
-        token,
+        token.value,
         new TextEncoder().encode(process.env.JWT_SECRET)
       );
 

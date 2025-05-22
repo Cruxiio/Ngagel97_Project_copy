@@ -53,7 +53,6 @@ export async function POST(request) {
       error: null,
     });
 
-    // Set token di cookies
     // response.cookies.set("token", token, {
     //   httpOnly: true,
     //   secure: process.env.NODE_ENV === "production",
@@ -61,13 +60,12 @@ export async function POST(request) {
     //   path: "/",
     // });
     response.cookies.set("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      httpOnly: false,
+      secure: false,
       maxAge: rememberMe ? 60 * 60 * 24 * 365 : 60 * 60 * 12, // 1 tahun atau 12 jam
       path: "/",
     });
 
-    // Set role di cookies
     // response.cookies.set("role", user.role, {
     //   httpOnly: true,
     //   secure: process.env.NODE_ENV === "production",
@@ -75,8 +73,8 @@ export async function POST(request) {
     //   path: "/",
     // });
     response.cookies.set("role", user.role, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      httpOnly: false,
+      secure: false,
       maxAge: rememberMe ? 60 * 60 * 24 * 365 : 60 * 60 * 12, // 1 tahun atau 12 jam
       path: "/",
     });
