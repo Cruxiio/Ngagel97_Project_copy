@@ -17,7 +17,7 @@ export async function POST(req) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    // Stream-based buffer creation
+    // 🔧 Revisi: Hindari experimental buffer.File
     const stream = file.stream();
     const chunks = [];
     for await (const chunk of stream) {
@@ -32,7 +32,7 @@ export async function POST(req) {
       Key: key,
       Body: buffer,
       ContentType: file.type,
-      ACL: "public-read",
+      ACL: "public-read", // Buat URL langsung bisa diakses
     };
 
     await s3.send(new PutObjectCommand(uploadParams));
@@ -40,7 +40,7 @@ export async function POST(req) {
     const url = `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
 
     return NextResponse.json({
-      url,
+      url, // Mirip dengan respon Vercel Blob
       pathname: `/${key}`,
       key,
       uploadedAt: new Date().toISOString(),
@@ -50,6 +50,34 @@ export async function POST(req) {
   } catch (error) {
     return NextResponse.json(
       { error: "File upload failed", details: error.message },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req) {
+  const { searchParams } = new URL(req.url);
+  const key = searchParams.get("key");
+
+  if (!key) {
+    return NextResponse.json({ error: "No key provided" }, { status: 400 });
+  }
+
+  try {
+    const deleteParams = {
+      Bucket: process.env.AWS_S3_BUCKET,
+      Key: key,
+    };
+
+    await s3.send(new DeleteObjectCommand(deleteParams));
+
+    return NextResponse.json({
+      success: true,
+      message: "File deleted successfully",
+    });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to delete file", details: error.message },
       { status: 500 }
     );
   }
