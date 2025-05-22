@@ -55,7 +55,7 @@ export async function POST(request) {
 
     // Set token di cookies
     response.cookies.set("token", token, {
-      httpOnly: false,
+      httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: rememberMe ? 60 * 60 * 24 * 365 : 60 * 60 * 12, // 1 tahun atau 12 jam
       path: "/",
@@ -63,7 +63,7 @@ export async function POST(request) {
 
     // Set role di cookies
     response.cookies.set("role", user.role, {
-      httpOnly: false,
+      httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: rememberMe ? 60 * 60 * 24 * 365 : 60 * 60 * 12, // 1 tahun atau 12 jam
       path: "/",
