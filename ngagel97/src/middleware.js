@@ -14,8 +14,6 @@ const STATIC_FILE_EXTENSIONS = [
 export async function middleware(request) {
   const token = request.cookies.get("token"); // Retrieve token from cookies
 
-  console.log(token);
-
   const { pathname } = request.nextUrl;
   console.log("Middleware is running. Pathname:", pathname);
 
