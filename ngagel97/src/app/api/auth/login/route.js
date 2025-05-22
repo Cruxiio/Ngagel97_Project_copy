@@ -61,8 +61,8 @@ export async function POST(request) {
     //   path: "/",
     // });
     response.cookies.set("token", token, {
-      httpOnly: false,
-      secure: false,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
       maxAge: rememberMe ? 60 * 60 * 24 * 365 : 60 * 60 * 12, // 1 tahun atau 12 jam
       path: "/",
     });
@@ -75,8 +75,8 @@ export async function POST(request) {
     //   path: "/",
     // });
     response.cookies.set("role", user.role, {
-      httpOnly: false,
-      secure: false,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
       maxAge: rememberMe ? 60 * 60 * 24 * 365 : 60 * 60 * 12, // 1 tahun atau 12 jam
       path: "/",
     });
