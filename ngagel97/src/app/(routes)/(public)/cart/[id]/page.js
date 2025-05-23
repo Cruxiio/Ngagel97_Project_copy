@@ -208,10 +208,12 @@ const CartDetail = () => {
     const formData = new FormData();
     formData.append("file", file);
 
-    // let filepath = lastUrl.replace(
-    //   "https://mnyziu33qakbhpjn.public.blob.vercel-storage.com/",
-    //   ""
-    // );
+    const bucket = process.env.AWS_S3_BUCKET;
+    const region = process.env.AWS_REGION;
+    let filepath = lastUrl.replace(
+      `https://${bucket}.s3.${region}.amazonaws.com/`,
+      ""
+    );
     await fetch(`/api/upload?key=${filepath}`, {
       method: "DELETE",
     });
