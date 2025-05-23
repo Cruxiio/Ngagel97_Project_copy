@@ -37,12 +37,12 @@ const CartPage = () => {
   }, []);
 
   const deleteFile = async (lastUrl) => {
-    let filepath = lastUrl.replace(
-      "https://mnyziu33qakbhpjn.public.blob.vercel-storage.com/",
-      ""
-    );
+    // let filepath = lastUrl.replace(
+    //   "https://mnyziu33qakbhpjn.public.blob.vercel-storage.com/",
+    //   ""
+    // );
 
-    await fetch(`/api/upload?filepath=${filepath}`, {
+    await fetch(`/api/upload?key=${filepath}`, {
       method: "DELETE",
     });
   };
@@ -125,7 +125,11 @@ const CartPage = () => {
                 {item.notes ? "Notes: " + item.notes : "No notes provided"}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {`Price breakdown: ${item.lembar} x ${item.qty} x ${item.harga} = Rp ${(item.lembar * item.qty * item.harga).toLocaleString("id-ID")}`}
+                {`Price breakdown: ${item.lembar} x ${item.qty} x ${
+                  item.harga
+                } = Rp ${(item.lembar * item.qty * item.harga).toLocaleString(
+                  "id-ID"
+                )}`}
               </Typography>
               <Typography variant="body1" fontWeight="bold">
                 Price: Rp {item.subtotal.toLocaleString("id-ID")}
@@ -147,7 +151,9 @@ const CartPage = () => {
                     >
                       <Typography variant="body2">{addOn.nama}</Typography>
                       <Typography variant="body2" color="textSecondary">
-                        {`Price: Rp ${addOn.harga.toLocaleString("id-ID")} per ${addOn.tipeHarga}`}
+                        {`Price: Rp ${addOn.harga.toLocaleString(
+                          "id-ID"
+                        )} per ${addOn.tipeHarga}`}
                       </Typography>
                       <Typography variant="body2" color="textSecondary">
                         {`Qty: ${addOn.qty}`}

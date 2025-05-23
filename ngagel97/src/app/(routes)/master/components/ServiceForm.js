@@ -110,11 +110,11 @@ export default function ServiceForm({ mode = "add", id }) {
     const formData = new FormData();
     formData.append("file", file);
 
-    let filepath = lastUrl.replace(
-      "https://mnyziu33qakbhpjn.public.blob.vercel-storage.com/",
-      ""
-    );
-    await fetch(`/api/upload?filepath=${filepath}`, {
+    // let filepath = lastUrl.replace(
+    //   "https://mnyziu33qakbhpjn.public.blob.vercel-storage.com/",
+    //   ""
+    // );
+    await fetch(`/api/upload?key=${filepath}`, {
       method: "DELETE",
     });
 
