@@ -37,8 +37,14 @@ const CartPage = () => {
   }, []);
 
   const deleteFile = async (lastUrl) => {
-    const key = decodeURIComponent(new URL(lastUrl).pathname.slice(1));
-    await fetch(`/api/upload?key=${encodeURIComponent(key)}`, {
+    const bucket = process.env.AWS_S3_BUCKET;
+    const region = process.env.AWS_REGION;
+    let filepath = lastUrl.replace(
+      `https://${bucket}.s3.${region}.amazonaws.com/`,
+      ""
+    );
+
+    await fetch(`/api/upload?key=${filepath}`, {
       method: "DELETE",
     });
   };

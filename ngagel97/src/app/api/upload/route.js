@@ -58,7 +58,7 @@ export async function POST(req) {
 
 export async function DELETE(req) {
   const { searchParams } = new URL(req.url);
-  const key = decodeURIComponent(searchParams.get("key"));
+  const key = searchParams.get("key");
 
   if (!key) {
     return NextResponse.json({ error: "No key provided" }, { status: 400 });
@@ -77,7 +77,8 @@ export async function DELETE(req) {
       message: "File deleted successfully",
     });
   } catch (error) {
-    console.error("Delete error:", error);
+    console.error("Upload error:", error);
+    console.log("Upload error:", error);
     return NextResponse.json(
       { error: "Failed to delete file", details: error.message },
       { status: 500 }
