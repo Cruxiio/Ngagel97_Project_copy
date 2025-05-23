@@ -77,8 +77,7 @@ export async function DELETE(req) {
       message: "File deleted successfully",
     });
   } catch (error) {
-    console.error("Upload error:", error);
-    console.log("Upload error:", error);
+    console.error("Delete error:", error);
     return NextResponse.json(
       { error: "Failed to delete file", details: error.message },
       { status: 500 }
