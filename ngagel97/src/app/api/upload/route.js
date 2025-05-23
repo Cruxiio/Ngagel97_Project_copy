@@ -17,7 +17,6 @@ export async function POST(req) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    // 🔧 Revisi: Hindari experimental buffer.File
     const stream = file.stream();
     const chunks = [];
     for await (const chunk of stream) {
