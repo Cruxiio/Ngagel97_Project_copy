@@ -37,24 +37,13 @@ const CartPage = () => {
   }, []);
 
   const deleteFile = async (lastUrl) => {
-    const bucket = process.env.AWS_S3_BUCKET;
-    const region = process.env.AWS_REGION;
-    let filepath = lastUrl.replace(
-      `https://${bucket}.s3.${region}.amazonaws.com/`,
-      ""
-    );
-
-    console.log("url: ", lastUrl);
-
-    await fetch(`/api/upload?key=${filepath}`, {
+    await fetch(`/api/upload?key=${lastUrl}`, {
       method: "DELETE",
     });
   };
 
   const handleRemoveItem = async (id) => {
     // Delete file first
-    console.log(cartItems[id]);
-
     try {
       await deleteFile(cartItems[id].file);
     } catch (error) {

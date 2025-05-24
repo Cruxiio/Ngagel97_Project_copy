@@ -57,7 +57,8 @@ export async function POST(req) {
 
 export async function DELETE(req) {
   const { searchParams } = new URL(req.url);
-  const key = searchParams.get("key");
+  let key = searchParams.get("key");
+  key = new URL(key).pathname.slice(1);
 
   if (!key) {
     return NextResponse.json({ error: "No key provided" }, { status: 400 });
