@@ -116,9 +116,6 @@ export default function ServiceForm({ mode = "add", id }) {
       `https://${bucket}.s3.${region}.amazonaws.com/`,
       ""
     );
-    console.log("url: ", lastUrl);
-
-    console.log("file: ", filepath);
 
     await fetch(`/api/upload?key=${filepath}`, {
       method: "DELETE",

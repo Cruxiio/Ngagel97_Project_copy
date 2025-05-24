@@ -44,6 +44,8 @@ const CartPage = () => {
       ""
     );
 
+    console.log(lastUrl);
+
     await fetch(`/api/upload?key=${filepath}`, {
       method: "DELETE",
     });

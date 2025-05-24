@@ -58,6 +58,7 @@ const CartDetail = () => {
           setCartItem(cartItemData);
           setQuantity(cartItemData.qty || 1);
           setLastFileUrl(cartItemData.file || null);
+          console.log(lastFileUrl);
           setPageCount(cartItemData.lembar || null);
           setNotes(cartItemData.notes || "");
           // Pre-set selected add-ons based on cart data
