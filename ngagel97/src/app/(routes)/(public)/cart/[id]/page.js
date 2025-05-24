@@ -57,8 +57,7 @@ const CartDetail = () => {
           const cartItemData = cartData.data; // Cart data
           setCartItem(cartItemData);
           setQuantity(cartItemData.qty || 1);
-          setLastFileUrl(cartItemData.file || null);
-          console.log(lastFileUrl);
+          setLastFileUrl(cartItemData.items.file || null);
           setPageCount(cartItemData.lembar || null);
           setNotes(cartItemData.notes || "");
           // Pre-set selected add-ons based on cart data
@@ -215,6 +214,8 @@ const CartDetail = () => {
       `https://${bucket}.s3.${region}.amazonaws.com/`,
       ""
     );
+    console.log("file: ", filepath);
+
     await fetch(`/api/upload?key=${filepath}`, {
       method: "DELETE",
     });
@@ -270,9 +271,6 @@ const CartDetail = () => {
           };
         }),
       };
-
-      // Update the cart with the new data
-      console.log(updatedCartData);
 
       const res = await fetch(`/api/cart/${id}`, {
         method: "PUT",
