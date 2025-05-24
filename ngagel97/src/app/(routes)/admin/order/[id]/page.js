@@ -106,7 +106,7 @@ const TransactionDetailPage = () => {
   if (error) return <Typography>Error: {error}</Typography>;
 
   return (
-    <Box sx={{minHeight: "100vh", padding: 4 }}>
+    <Box sx={{ minHeight: "100vh", padding: 4 }}>
       {/* Header Section */}
       <Box mb={4}>
         <Grid2 container alignItems="center" spacing={2}>
@@ -132,7 +132,10 @@ const TransactionDetailPage = () => {
       </Box>
 
       {/* Order Details */}
-      <Card elevation={5} sx={{ marginBottom: 4, borderRadius: 2, overflow: "hidden" }}>
+      <Card
+        elevation={5}
+        sx={{ marginBottom: 4, borderRadius: 2, overflow: "hidden" }}
+      >
         <CardContent>
           <Typography variant="h6" fontWeight="bold" gutterBottom>
             Order Information
@@ -180,9 +183,14 @@ const TransactionDetailPage = () => {
                   {jasa.nama}
                 </Typography>
                 <Typography variant="body1">
-                  Quantity: {jasa.lembar} Sheets | Copies: {jasa.qty} | Price: Rp. {jasa.harga}
+                  Quantity: {jasa.lembar} Sheets | Copies: {jasa.qty} | Price:
+                  Rp. {jasa.harga}
                 </Typography>
-                <Typography variant="body2" color="textSecondary" sx={{ marginTop: 1 }}>
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  sx={{ marginTop: 1 }}
+                >
                   Notes: {jasa.notes || "-"}
                 </Typography>
                 {jasa.addOns.length > 0 && (
@@ -193,8 +201,8 @@ const TransactionDetailPage = () => {
                     {jasa.addOns.map((addOn, idx) => (
                       <Typography key={idx} variant="body2">
                         - {addOn.nama} with {addOn.qty}{" "}
-                        {addOn.tipeHarga === "lembar" ? "sheet" : "copy"}{" "}
-                        priced at Rp. {addOn.harga}
+                        {addOn.tipeHarga === "lembar" ? "sheet" : "copy"} priced
+                        at Rp. {addOn.harga}
                       </Typography>
                     ))}
                   </Box>
@@ -203,7 +211,7 @@ const TransactionDetailPage = () => {
               <CardActions sx={{ position: "absolute", bottom: 8, right: 8 }}>
                 <Tooltip title="Download File">
                   <IconButton
-                    href={jasa.file + "?download=1"}
+                    href={jasa.file}
                     target="_blank"
                     rel="noopener noreferrer"
                     color="primary"
@@ -267,7 +275,8 @@ const TransactionDetailPage = () => {
             Are you sure you want to{" "}
             {actionType === "deliver"
               ? "deliver this order"
-              : "mark this order as completed"}?
+              : "mark this order as completed"}
+            ?
           </Typography>
         </DialogContent>
         <DialogActions>
