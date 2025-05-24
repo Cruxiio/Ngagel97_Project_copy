@@ -44,7 +44,7 @@ const CartPage = () => {
       ""
     );
 
-    console.log(lastUrl);
+    console.log("url: ", lastUrl);
 
     await fetch(`/api/upload?key=${filepath}`, {
       method: "DELETE",
@@ -53,6 +53,8 @@ const CartPage = () => {
 
   const handleRemoveItem = async (id) => {
     // Delete file first
+    console.log(cartItems[id]);
+
     try {
       await deleteFile(cartItems[id].file);
     } catch (error) {
