@@ -136,7 +136,7 @@ const AddOnPage = () => {
                 variant="outlined"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Type to search"  
+                placeholder="Type to search"
                 sx={{
                   backgroundColor: "white",
                   borderRadius: "8px",
@@ -267,6 +267,6 @@ const AddOnPage = () => {
       </Grid2>
     </div>
   );
-};  
+};
 
 export default AddOnPage;
